@@ -1,0 +1,90 @@
+{
+  "Confidence threshold": {
+    "rows": [
+      {
+        "agent_name": "Threshold 0",
+        "agent_tokens_only": 59,
+        "prompt_tokens_processed": 350,
+        "recall_score": 0.0,
+        "response_quality": 0.2,
+        "memory_growth_bytes": 294,
+        "compactions": 0
+      },
+      {
+        "agent_name": "Threshold 0.8",
+        "agent_tokens_only": 58,
+        "prompt_tokens_processed": 348,
+        "recall_score": 1.0,
+        "response_quality": 1.0,
+        "memory_growth_bytes": 290,
+        "compactions": 0
+      }
+    ],
+    "variants": [
+      {
+        "policy": {
+          "confidence_threshold": 0,
+          "decay_half_life_turns": 100.0,
+          "min_priority": 0,
+          "decay_enabled": false
+        },
+        "stored_facts": 2,
+        "active_facts": 2
+      },
+      {
+        "policy": {
+          "confidence_threshold": 0.8,
+          "decay_half_life_turns": 100.0,
+          "min_priority": 0,
+          "decay_enabled": false
+        },
+        "stored_facts": 2,
+        "active_facts": 2
+      }
+    ]
+  },
+  "Memory decay": {
+    "rows": [
+      {
+        "agent_name": "Decay off",
+        "agent_tokens_only": 195,
+        "prompt_tokens_processed": 2509,
+        "recall_score": 1.0,
+        "response_quality": 1.0,
+        "memory_growth_bytes": 417,
+        "compactions": 0
+      },
+      {
+        "agent_name": "Half-life 2 turns",
+        "agent_tokens_only": 190,
+        "prompt_tokens_processed": 2437,
+        "recall_score": 0.5,
+        "response_quality": 0.6000000000000001,
+        "memory_growth_bytes": 417,
+        "compactions": 0
+      }
+    ],
+    "variants": [
+      {
+        "policy": {
+          "confidence_threshold": 0.8,
+          "decay_half_life_turns": 2,
+          "min_priority": 0.3,
+          "decay_enabled": false
+        },
+        "stored_facts": 3,
+        "active_facts": 3
+      },
+      {
+        "policy": {
+          "confidence_threshold": 0.8,
+          "decay_half_life_turns": 2,
+          "min_priority": 0.3,
+          "decay_enabled": true
+        },
+        "stored_facts": 3,
+        "active_facts": 1
+      }
+    ]
+  }
+}

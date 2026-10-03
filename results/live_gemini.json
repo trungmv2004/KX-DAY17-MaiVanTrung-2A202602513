@@ -1,0 +1,170 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "mode": "live",
+  "checks": [
+    {
+      "name": "baseline_introduction",
+      "passed": true,
+      "answer": "Chào LanTest, rất vui được làm quen với bạn tại Huế!"
+    },
+    {
+      "name": "baseline_within_thread",
+      "passed": true,
+      "answer": "Bạn tên là LanTest."
+    },
+    {
+      "name": "baseline_forgets_new_thread",
+      "passed": true,
+      "answer": "Tôi chưa biết tên của bạn."
+    },
+    {
+      "name": "advanced_introduction",
+      "passed": true,
+      "answer": "Chào LanTest, rất vui được làm quen với bạn tại Huế! Mình đã ghi nhận thông tin của bạn."
+    },
+    {
+      "name": "advanced_correction",
+      "passed": true,
+      "answer": "Chào LanTest, mình đã cập nhật thông tin: hiện tại bạn đang ở Hà Nội."
+    },
+    {
+      "name": "advanced_recall_after_restart",
+      "passed": true,
+      "answer": "Tên của bạn là LanTest và bạn đang ở Hà Nội."
+    },
+    {
+      "name": "confidence_ignores_third_party",
+      "passed": true,
+      "answer": "Tôi đã ghi nhận bạn của bạn tên là Nam. Hiện tại tôi chưa biết thông tin về nơi ở của Nam."
+    },
+    {
+      "name": "confidence_keeps_user_name",
+      "passed": true,
+      "answer": "Bạn tên là LanTest."
+    },
+    {
+      "name": "decay_introduction",
+      "passed": true,
+      "answer": "Chào bạn BinhDecay, rất vui được làm quen với bạn tại Hà Nội! Tôi đã ghi nhận thông tin của bạn."
+    },
+    {
+      "name": "decay_omits_old_location_new_thread",
+      "passed": true,
+      "answer": "Tên của bạn là BinhDecay. Tôi chưa biết thông tin về nơi ở hiện tại của bạn."
+    }
+  ],
+  "api_calls": [
+    {
+      "duration_seconds": 3.984,
+      "usage": {
+        "input_tokens": 64,
+        "output_tokens": 14,
+        "total_tokens": 78,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 9.188,
+      "usage": {
+        "input_tokens": 84,
+        "output_tokens": 6,
+        "total_tokens": 90,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 1.375,
+      "usage": {
+        "input_tokens": 57,
+        "output_tokens": 7,
+        "total_tokens": 64,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 7.641,
+      "usage": {
+        "input_tokens": 79,
+        "output_tokens": 23,
+        "total_tokens": 102,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 1.469,
+      "usage": {
+        "input_tokens": 114,
+        "output_tokens": 19,
+        "total_tokens": 133,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 1.422,
+      "usage": {
+        "input_tokens": 81,
+        "output_tokens": 14,
+        "total_tokens": 95,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 1.375,
+      "usage": {
+        "input_tokens": 104,
+        "output_tokens": 24,
+        "total_tokens": 128,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 2.0,
+      "usage": {
+        "input_tokens": 73,
+        "output_tokens": 6,
+        "total_tokens": 79,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 3.0,
+      "usage": {
+        "input_tokens": 85,
+        "output_tokens": 27,
+        "total_tokens": 112,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    },
+    {
+      "duration_seconds": 5.859,
+      "usage": {
+        "input_tokens": 77,
+        "output_tokens": 23,
+        "total_tokens": 100,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      }
+    }
+  ],
+  "status": "passed"
+}

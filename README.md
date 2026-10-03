@@ -1,5 +1,7 @@
 # Phase 2, Track 3, Day 17: Memory Systems for AI Agent
 
+Phần triển khai trong `src/` đã hoàn thiện. Chạy benchmark và test theo phần **Setup môi trường** bên dưới. Kết quả đã đo nằm trong [results/benchmark.md](results/benchmark.md); phần giải thích số liệu và bonus nằm trong [ANALYSIS.md](ANALYSIS.md).
+
 Trong Day 17 này, các bạn sẽ tập trung vào một câu hỏi rất thực tế: làm sao để AI agent **không chỉ trả lời tốt trong một lượt chat**, mà còn **nhớ đúng thông tin quan trọng qua nhiều phiên làm việc** mà vẫn kiểm soát được chi phí token.
 
 Trong bài lab này, các bạn sẽ xây dựng và so sánh hai agent:
@@ -35,7 +37,7 @@ Sau khi hoàn thành, các bạn cần có khả năng:
 ├── data/            # dữ liệu benchmark dùng chung
 │   ├── conversations.json
 │   └── advanced_long_context.json
-└── src/             # bản scaffold dành cho sinh viên (pseudocode + TODO)
+└── src/             # cấu hình, memory layer, hai agent, benchmark và test
     ├── model_provider.py
     ├── config.py
     ├── memory_store.py
@@ -45,7 +47,7 @@ Sau khi hoàn thành, các bạn cần có khả năng:
     └── test_agents.py
 ```
 
-Khi chạy, agent sẽ ghi trạng thái (ví dụ `state/profiles/<user>/User.md`) vào thư mục `state/`. Thư mục này đã nằm trong `.gitignore`.
+Khi chạy, agent ghi `state/profiles/<user>/User.md` và `Memory.json` vào thư mục `state/`. `Memory.json` lưu confidence và lượt xác nhận gần nhất để tính decay qua nhiều phiên. Thư mục này đã nằm trong `.gitignore`.
 
 ### Vai trò từng file trong `src/`
 
@@ -65,10 +67,10 @@ Các file được liệt kê theo thứ tự nên triển khai:
 
 ```
 message người dùng
-  → extract_profile_updates()      # trích fact ổn định: tên, nơi ở, nghề, style...
-  → ghi vào User.md                # persistent memory
+  → extract_profile_candidates()   # trích fact kèm confidence theo quy tắc
+  → lọc confidence → ghi User.md + Memory.json
   → CompactMemoryManager.append()  # short-term memory, tự compact khi vượt ngưỡng
-  → prompt = User.md + summary + recent messages
+  → prompt = các fact còn đủ ưu tiên + summary + recent messages
   → sinh câu trả lời → cập nhật bộ đếm token
 ```
 
@@ -140,8 +142,18 @@ Các bạn cần chuẩn bị môi trường Python `>= 3.11` và cài các pack
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install langchain langgraph langchain-openai langchain-google-genai langchain-anthropic langchain-ollama langchain-openrouter python-dotenv tabulate pytest
+python -m pip install -r requirements.txt
 ```
+
+Trên Windows PowerShell:
+
+```powershell
+py -3 -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+`requirements.txt` cố định phiên bản của các thư viện trực tiếp đã kiểm tra. Có thể chép `.env.example` thành `.env` để cấu hình. Mặc định là **offline**, không cần API key; chế độ live cần `LLM_MODE=live`, `LLM_MODEL` thực và key của provider tương ứng (Ollama không cần key). Biến môi trường đã export có ưu tiên cao hơn `.env`.
 
 Nếu muốn chạy chế độ live với LLM thật, hãy tạo file `.env` ở root repo (đã nằm trong `.gitignore`). Tên biến môi trường do các bạn quyết định khi viết `load_config()`. Ví dụ:
 
@@ -162,6 +174,31 @@ python src/benchmark.py
 ```bash
 pytest src/test_agents.py -v
 ```
+
+`pytest.ini` đặt thư mục tạm tại `state/pytest` để các test dùng `tmp_path` chạy được trong workspace trên Windows. Thư mục này dành riêng cho test và được pytest làm sạch khi chạy.
+
+Lưu kết quả và chạy các phép kiểm chứng bổ sung:
+
+```bash
+python src/benchmark.py --output results/benchmark.md --json results/benchmark.json
+python src/benchmark.py --no-compact --output results/benchmark_no_compact.md --json results/benchmark_no_compact.json
+python src/bonus_benchmark.py
+python src/bonus_policies.py
+```
+
+Confidence threshold mặc định `0.8`; khai báo rõ ràng có điểm `0.98`, thông tin về người khác, trích dẫn và câu không chắc chắn có điểm thấp hơn. Đây là điểm theo quy tắc, chưa phải xác suất đã hiệu chỉnh.
+
+Memory decay tính theo lượt của từng user: `priority = confidence × 2^(-age / half_life)`. Mặc định half-life 100 lượt, ngưỡng ưu tiên `0.2`, tên được giữ ổn định. Fact dưới ngưỡng được bỏ khỏi phần profile trong prompt; dữ liệu gốc vẫn nằm trong `User.md` và được kích hoạt lại khi người dùng xác nhận. Cấu hình qua `MEMORY_CONFIDENCE_THRESHOLD`, `MEMORY_DECAY_HALF_LIFE_TURNS`, `MEMORY_DECAY_MIN_PRIORITY`, `MEMORY_DECAY_ENABLED` trong [.env.example](.env.example).
+
+Kiểm thử API thật được chạy riêng, dùng dữ liệu giả và tối đa 10 lời gọi nếu tất cả kiểm tra đạt:
+
+```bash
+python src/live_smoke.py --provider gemini --model gemini-3.1-flash-lite --output results/live_gemini.json
+```
+
+Lệnh cần `GEMINI_API_KEY`, không đổi `.env`, không chấp nhận trả lời offline thay cho API. Mỗi request giới hạn 256 output token, timeout 20 giây và không retry. Kết quả đã chạy: **10/10 đạt**, lưu câu trả lời, thời gian và token do provider báo trong [live_gemini.json](results/live_gemini.json). Các provider còn lại chưa được gọi API thật.
+
+Mỗi lần benchmark tự làm sạch thư mục riêng của dataset trong `state/benchmarks/`. Profile ở `state/profiles/` được giữ nguyên. Sau lần chạy, có thể mở `state/benchmarks/conversations/profiles/dungct/User.md` hoặc `state/benchmarks/advanced_long_context/profiles/dungct_stress/User.md` để xem fact đã lưu.
 
 Benchmark cần in ra hai bảng: **Standard Benchmark** và **Long-Context Stress Benchmark**. Mỗi bảng so sánh Baseline với Advanced theo đủ 6 cột trong phần "Chỉ số benchmark cần hiểu".
 

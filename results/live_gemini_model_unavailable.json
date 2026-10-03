@@ -1,0 +1,12 @@
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-flash-lite",
+  "mode": "live",
+  "checks": [],
+  "api_calls": [],
+  "status": "failed",
+  "error": {
+    "type": "GoogleModelNotFoundError",
+    "status_code": null
+  }
+}

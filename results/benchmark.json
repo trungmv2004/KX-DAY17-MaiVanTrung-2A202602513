@@ -1,0 +1,59 @@
+{
+  "settings": {
+    "compact_threshold_tokens": 1800,
+    "compact_keep_messages": 4,
+    "mode": "offline",
+    "memory_policy": {
+      "confidence_threshold": 0.8,
+      "decay_half_life_turns": 100.0,
+      "min_priority": 0.2,
+      "decay_enabled": true
+    },
+    "memory_growth_files": [
+      "User.md",
+      "Memory.json"
+    ]
+  },
+  "suites": {
+    "Standard Benchmark": [
+      {
+        "agent_name": "Baseline",
+        "agent_tokens_only": 1846,
+        "prompt_tokens_processed": 21642,
+        "recall_score": 0.0,
+        "response_quality": 0.2,
+        "memory_growth_bytes": 0,
+        "compactions": 0
+      },
+      {
+        "agent_name": "Advanced",
+        "agent_tokens_only": 2049,
+        "prompt_tokens_processed": 29504,
+        "recall_score": 1.0,
+        "response_quality": 1.0,
+        "memory_growth_bytes": 1215,
+        "compactions": 0
+      }
+    ],
+    "Long-Context Stress Benchmark": [
+      {
+        "agent_name": "Baseline",
+        "agent_tokens_only": 337,
+        "prompt_tokens_processed": 23695,
+        "recall_score": 0.0,
+        "response_quality": 0.2,
+        "memory_growth_bytes": 0,
+        "compactions": 0
+      },
+      {
+        "agent_name": "Advanced",
+        "agent_tokens_only": 394,
+        "prompt_tokens_processed": 19091,
+        "recall_score": 1.0,
+        "response_quality": 1.0,
+        "memory_growth_bytes": 993,
+        "compactions": 1
+      }
+    ]
+  }
+}

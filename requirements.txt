@@ -1,0 +1,10 @@
+langchain==1.4.3
+langgraph==1.2.12
+langchain-openai==1.6.7
+langchain-google-genai==4.4.0
+langchain-anthropic==1.7.5
+langchain-ollama==1.1.0
+langchain-openrouter==0.2.9
+python-dotenv==1.2.4
+tabulate==0.10.0
+pytest==9.1.1

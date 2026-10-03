@@ -1,0 +1,42 @@
+{
+  "Standard Benchmark": [
+    {
+      "agent_name": "Advanced (first fact wins)",
+      "agent_tokens_only": 2060,
+      "prompt_tokens_processed": 29615,
+      "recall_score": 0.6428571428571429,
+      "response_quality": 0.7342857142857143,
+      "memory_growth_bytes": 1221,
+      "compactions": 0
+    },
+    {
+      "agent_name": "Advanced (corrections)",
+      "agent_tokens_only": 2049,
+      "prompt_tokens_processed": 29504,
+      "recall_score": 1.0,
+      "response_quality": 1.0,
+      "memory_growth_bytes": 1215,
+      "compactions": 0
+    }
+  ],
+  "Long-Context Stress Benchmark": [
+    {
+      "agent_name": "Advanced (first fact wins)",
+      "agent_tokens_only": 391,
+      "prompt_tokens_processed": 19080,
+      "recall_score": 0.6666666666666666,
+      "response_quality": 0.8,
+      "memory_growth_bytes": 986,
+      "compactions": 1
+    },
+    {
+      "agent_name": "Advanced (corrections)",
+      "agent_tokens_only": 394,
+      "prompt_tokens_processed": 19091,
+      "recall_score": 1.0,
+      "response_quality": 1.0,
+      "memory_growth_bytes": 993,
+      "compactions": 1
+    }
+  ]
+}
